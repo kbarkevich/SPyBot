@@ -1,0 +1,24 @@
+<html lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container h-100 w-100">
+            <div class="row h-100 w-100 align-items-center justify-content-center">
+                <div class="col m-5 p-5">
+                    <h1 class="mb-4">- Enter a Channel ID -</h1>
+                    <form id="channelForm" action="/channel" method="post">
+                        <div class="form-group">
+                            <input required type="number" class="form-control" id="id" name="id" placeholder="Channel id...">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <script src="{{ url_for('static', filename='index.js') }}"></script>
+    </footer>
+</html>
