@@ -96,6 +96,20 @@ async def A(context):
 
 
 @client.command(
+    name="biga",
+    description="AAAaaa...",
+    pass_context=True,
+)
+async def bigA(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/biga.mp3", volume=4.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
     name="sports",
     description="SPORTS",
     pass_context=True,
@@ -105,6 +119,62 @@ async def sports(context):
     voice = user.voice
     if voice is not None:
         await play_audio(user.voice.channel, "sounds/sports.mp3", volume=6.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="bigsports",
+    description="SPOOOorrtss...",
+    pass_context=True,
+)
+async def bigSports(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/bigsports.mp3", volume=6.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="2sports",
+    description="2SPOOOorrtss...",
+    pass_context=True,
+)
+async def bigSports(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/2sports.mp3", volume=4.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="2sportsx",
+    description="2SPOOOorrtss... X!",
+    pass_context=True,
+)
+async def bigSports(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/2sportsx.mp3", volume=4.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="game",
+    description="SINAGAME",
+    pass_context=True,
+)
+async def game(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/game.mp3", volume=6.0)
     else:
         await context.channel.send("You aren't in a VC!")
 
