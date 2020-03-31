@@ -54,6 +54,62 @@ async def E(context):
 
 
 @client.command(
+    name="e9",
+    description="EEEEEEEEE",
+    pass_context=True,
+)
+async def E9(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/e9.mp3", volume=6.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="bige",
+    description="EEEeee...",
+    pass_context=True,
+)
+async def bigE(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/bige.mp3", volume=4.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="a",
+    description="A",
+    pass_context=True,
+)
+async def A(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/a.mp3", volume=6.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="sports",
+    description="SPORTS",
+    pass_context=True,
+)
+async def sports(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/sports.mp3", volume=6.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
     name="trucks",
     description="Two of them.",
     pass_context=True,
