@@ -48,7 +48,7 @@ async def voiceRoulette(context: commands.Context, arg="0"):
         if channelcount < 0:
             channelcount = 0
     except ValueError as e:
-        print("Invalid number, defaaulting to 0")
+        print("Invalid number, defaulting to 0")
         channelcount = 0
     print(channelcount)
     usablechannels = await get_guild_voice_channels(context.guild, count=channelcount)
