@@ -1,6 +1,7 @@
 import sys
 import discord
-from discord import PCMAudio
+import random
+from discord import PCMAudio, Message
 import asyncio
 from threading import Thread
 from discord.ext import commands
@@ -18,6 +19,52 @@ client_loop = None
 @client.event
 async def on_ready():
     print("Bot is ready!")
+
+
+@client.command(
+    name="nick_roulette",
+    description="Play a game of Nickname Roulette! Randomly shuffle names around with your fellow voice chat-goers.",
+    pass_context=True,
+)
+async def nickRoulette(context: commands.Context):
+    sender = context.message.author
+    voice = sender.voice
+    if voice is None:
+        await context.channel.send("You aren't in a VC!")
+    else:
+        await context.channel.send("Spin the wheel, around it goes....")
+        await play_nick_roulette(sender.voice.channel)
+
+
+@client.command(
+    name="voice_roulette",
+    description="Play a game of Voice Chat Roulette! Randomly shuffle everybody in VC around" +
+                " a specified number of chats, defaulting to all of the available ones.",
+    pass_context=True,
+)
+async def voiceRoulette(context: commands.Context, arg="0"):
+    try:
+        channelcount = int(arg)
+        if channelcount < 0:
+            channelcount = 0
+    except ValueError as e:
+        print("Invalid number, defaaulting to 0")
+        channelcount = 0
+    print(channelcount)
+    usablechannels = await get_guild_voice_channels(context.guild, count=channelcount)
+    voicemembers = await get_guild_voice_members(context.guild)
+    if len(usablechannels) == 0:
+        context.channel.send("No usable voice channels!")
+    else:
+        print("Indexes for random edges are 0 and " + str(len(usablechannels)))
+        print("list of channels is " + str(usablechannels))
+        for member in voicemembers:
+            channelindex = random.randint(0, len(usablechannels)-1)
+            print("Current channel index: " + str(channelindex))
+            channel = usablechannels[channelindex]
+            print("Moving " + member.display_name + " to voice channel " + channel.name)
+            await member.edit(voice_channel=channel)
+        await context.channel.send("Spin the wheel, around it goes....")
 
 
 @client.command()
@@ -77,6 +124,20 @@ async def bigE(context):
     voice = user.voice
     if voice is not None:
         await play_audio(user.voice.channel, "sounds/bige.mp3", volume=4.0)
+    else:
+        await context.channel.send("You aren't in a VC!")
+
+
+@client.command(
+    name="somebode",
+    description="e E e e, e e?",
+    pass_context=True,
+)
+async def bigE(context):
+    user = context.message.author
+    voice = user.voice
+    if voice is not None:
+        await play_audio(user.voice.channel, "sounds/somebodE.mp3", volume=4.0)
     else:
         await context.channel.send("You aren't in a VC!")
 
@@ -156,11 +217,11 @@ async def bigSports(context):
     description="2SPOOOorrtss... X!",
     pass_context=True,
 )
-async def bigSports(context):
+async def twoSportsX(context: discord.ext.commands.context.Context):
     user = context.message.author
     voice = user.voice
     if voice is not None:
-        await play_audio(user.voice.channel, "sounds/2sportsx.mp3", volume=4.0)
+        await play_audio(user.voice.channel, "sounds/2sportsx.mp3", volume=2.5)
     else:
         await context.channel.send("You aren't in a VC!")
 
@@ -222,6 +283,49 @@ async def play_audio(voice_channel, filename, volume=1.0):
         await asyncio.sleep(1)
     vc.stop()
     await vc.disconnect()
+
+
+async def play_nick_roulette(channel: discord.VoiceChannel):
+    members = channel.members
+    names = list()
+    for member in members:
+        print(member.display_name)
+        names.append(member.display_name)
+    random.shuffle(names)
+    for i in range(0, len(members)):
+        print("Changing " + members[i].display_name + "'s nickname to", names[i])
+        try:
+            await members[i].edit(nick=names[i])
+        except discord.errors.Forbidden as e:
+            print("Permission was denied.")
+
+
+async def get_guild_voice_channels(guild: discord.Guild, count:int = 0, includeafk=False):
+    channels = guild.voice_channels
+    afk = guild.afk_channel
+    if not includeafk and afk is not None:
+        print("theres an afk channel")
+        for channel in channels:
+            if channel.id == afk.id:
+                print("Removing afk channel " + channel.name)
+                channels.remove(channel)
+                break
+    if len(channels) == 0:
+        return []
+    elif count == 0 or len(channels) <= count:
+        return channels
+    else:
+        return channels[0:count]
+
+
+async def get_guild_voice_members(guild: discord.Guild):
+    channels = guild.voice_channels
+    members = list()
+    for channel in channels:
+        for member in channel.members:
+            members.append(member)
+    return members
+
 
 ################## FLASK SERVER ##################
 @app.route('/')
